@@ -76,44 +76,38 @@ public class MainActivity extends AppCompatActivity {
     //Importa arquivo txt
     public List<Produto> importarArquivo() {
         List<Produto> prod = new ArrayList<>();
-        //Produto produto;
-        String code, desc, unidMedida, qtd;
+        String code ="", desc= "", unidMedida= "", qtd = "";
         AssetManager assetManager = getResources().getAssets();
         InputStream inputStream;
-        //ArrayAdapter<String> adapter = null;
-       // ArrayList<String> itens = null;
-       // ManagerBanco db = new ManagerBanco(this);
+        Produto produto = null;
         StringTokenizer str;
         try {
             inputStream = assetManager.open("dados.txt");
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String recebe_string;
-
             if ((recebe_string = bufferedReader.readLine()) != null) {
-                str = new StringTokenizer(recebe_string, ";");
-                while (str.hasMoreTokens()) {
-
-                    code = str.nextToken();
-                    desc = str.nextToken();
-                    unidMedida = str.nextToken();
-                    qtd = str.nextToken();
-                    //produto = new Produto(code, desc, unidMedida, qtd);
-                    prod.add(new Produto(code, desc, unidMedida, qtd));
-                    Log.d("Code lido: ", code);
+                while ((recebe_string = bufferedReader.readLine()) != null) {
+                    str = new StringTokenizer(recebe_string, ";");
+                    while (str.hasMoreTokens()) {
+                        code = str.nextToken();
+                        desc = str.nextToken();
+                        unidMedida = str.nextToken();
+                        qtd = str.nextToken();
+                        produto = new Produto(code, desc, unidMedida, qtd);
+                        prod.add(produto);
+                    }
                 }
             } else {
                 Toast toast = Toast.makeText(this, "Não há dados no arquivo!", Toast.LENGTH_LONG);
                 toast.show();
             }
-            //itens = db.getAllItens();
- //           adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, itens);
-//            ListView show = (ListView) findViewById(R.id.exibeDados);
-//            show.setAdapter(adapter);
+
             inputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return prod;
 
     }
