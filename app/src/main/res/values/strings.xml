@@ -1,0 +1,12 @@
+<resources>
+
+    <string name="app_name">ScanCode</string>
+    <string name="action_settings">Settings</string>
+    <string name="btnScan">Scan</string>
+    <string name="txtbtnQRcode">Importar Arquivo</string>
+    <string name="txtbtnBarcode">Ler Código de Barras</string>
+    <string name="txtbtnListaCodBarras">Codigo de Barras Lido</string>
+    <string name="QTD">Quantidade</string>
+    <string name="NomeProduto">Nome</string>
+    <string name="dfghj">"Code lido: "</string>
+</resources>
