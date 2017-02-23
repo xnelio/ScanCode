@@ -32,6 +32,12 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".ListaDadosImportados"></activity>
+        <activity android:name=".EditarProduto">
+            <intent-filter>
+                 <action android:name="android.intent.action.DELETE" />
+            </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>

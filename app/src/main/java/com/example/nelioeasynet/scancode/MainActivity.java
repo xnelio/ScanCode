@@ -1,10 +1,12 @@
 package com.example.nelioeasynet.scancode;
 
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -112,10 +114,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
     //alert dialog for downloadDialog
-    /*
+
     private static AlertDialog showDialog(final AppCompatActivity act, CharSequence title, CharSequence message, CharSequence buttonYes, CharSequence buttonNo) {
         AlertDialog.Builder downloadDialog = new AlertDialog.Builder(act);
         downloadDialog.setTitle(title);
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         });
         return downloadDialog.show();
     }
-*/
+
     //on ActivityResult method
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -150,19 +150,27 @@ public class MainActivity extends AppCompatActivity {
             String scanResult = scanningResult.getContents();
 
             try {
-                produto = db.buscaItem(scanResult);
 
-                Log.d("SUCESSO", produto.getDesc());
-                if(produto.getCode().equals(scanResult)){
-                    Intent myIntent = new Intent();
+                produto = db.getProduto(scanResult);
+                Log.d("Leitura: ", produto.getCode());
 
+                if(produto != null){
+                    if(produto.getCode().equals(scanResult))
+                    {
+                        String[] dados = {produto.getCode(), produto.getDesc(), produto.getQtd(), produto.getUnidMedida()};
+                        Intent myIntent = new Intent(this, EditarProduto.class);
+                        myIntent.putExtra("v", dados);
+                        startActivity(myIntent);
+                    }
+
+                }else{
+                    toast = Toast.makeText(getApplicationContext(), "Produto não encontrado na lista Importada.", Toast.LENGTH_SHORT);
+                    toast.show();
+                    //produtoNaoEncontrado("Erro", "Esse Código não foi localizado na base", "OK" );
                 }
-
-
             } catch (EmptyStackException ignored) {
 
             }
-
 
         } else {
             toast = Toast.makeText(getApplicationContext(), " não foi possivel LER O ITEM!", Toast.LENGTH_SHORT);
@@ -280,6 +288,23 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+    private AlertDialog produtoNaoEncontrado(CharSequence title, CharSequence message, CharSequence buttonYes) {
+        AlertDialog.Builder downloadDialog = new AlertDialog.Builder(getBaseContext());
+        downloadDialog.setTitle(title);
+        downloadDialog.setMessage(message);
+        downloadDialog.setPositiveButton(buttonYes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException anfe) {
+
+                }
+            }
+        });
+
+        return downloadDialog.show();
     }
 
     private void trace(String msg) {
