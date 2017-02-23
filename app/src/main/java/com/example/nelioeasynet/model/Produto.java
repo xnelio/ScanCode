@@ -69,4 +69,11 @@ public class Produto implements Serializable {
     public void setQtd(String qtd) {
         this.qtd = qtd;
     }
+
+    @Override
+    public String toString(){
+        return String.format("Nome: " + getDesc() +
+                                "\nQuantidade: " + getQtd() +
+                            "\nUnidade de Medida: " + getUnidMedida());
+    }
 }
